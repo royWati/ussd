@@ -129,12 +129,12 @@ if(Data::number_exists($MSISDN)==1){
 
 				$response="CON ENTER AMOUNT";
 			}elseif ($level_two=="1" && $level_three=="2") {
-				# 04*1*2
+				 # 04*1*2
 
 				$response="CON ENTER PHONE NUMBER";
 			}elseif ($level_two=="2") {
 					if(Data::number_exists($level_three)==1){
-							$response="CON ENTER YOUR PIN";
+							 $response="CON ENTER YOUR PIN";
 					}else {
 						$response="END Sorry but your refferers number does not exists";
 					}

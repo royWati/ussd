@@ -12,7 +12,7 @@ Class Data{
 		$get_row=$db->GetRow("SELECT * FROM tb_users where phone_number='".$phone_number."'");
 
 		if($get_row){
-			return 1;
+		  	return 1;
 		}else{
 			return 0;
 		}
