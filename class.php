@@ -45,6 +45,23 @@ Class Data{
 
 		return Data::number_refer_exists($refer_no);
 	}
+	public static function add_new_member($phone_number,$pin){
+		global $db;
+
+		$name=$db->GetOne("SELECT name FROM tb_referred_members where refer_no='".$phone_number."'");
+
+		$data=array();
+
+		$data['phone_number']=$phone_number;
+		$data['name']=$name;
+		$data['tb_active_status']="1";
+		$data['pin']= md5(sha1($pin));
+
+		$db->AutoExecute('tb_users',$data, 'INSERT');
+
+		return Data::number_exists($phone_number);
+	}
+
 
 
 }
