@@ -1,0 +1,11 @@
+mini statement to statement
+	1. mini statement
+	2. Full Statement
+
+1. Last Five transcations
+2. 1. one month 2. 3 months 6. 1 year
+	2. enter email adress
+	
+
+
+Register user check for the phone number bug

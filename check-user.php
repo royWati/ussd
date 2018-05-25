@@ -1,7 +1,6 @@
 <?php
 
 include('Apis.php');
-echo Apis::Db('checkUser','0716097670',0);
+var_dump(Apis::register_user("0724490283","0708691402","roy","1234")) ;
 
-
- ?>
+?>
