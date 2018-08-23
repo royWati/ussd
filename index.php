@@ -26,7 +26,7 @@ if(Data::number_exists($MSISDN)==1){
 		      if($level_one=="04" || $level_one=="8"){
 			         # 04
             //   $test_user="mutai";
-			            $response="CON Welcome ".Data::get_user_name($MSISDN) ." to AirtimeZone services. Please enter your PIN:\n 00. Forgot Pin";
+			            $response="CON Welcome ".Data::get_user_name($MSISDN) ." to AirtimeZone services. Please enter your PIN:\n 000. Forgot Pin";
 		       }
     }elseif (sizeof($input_array)==2) {
         $level_two=$input_array[sizeof($input_array)-1];
@@ -133,34 +133,37 @@ if(Data::number_exists($MSISDN)==1){
             if($level_four=="1" && $level_five=="1"){
                 $response="CON Enter Amount \n 0. Back";
             }else if($level_four=="1" && $level_five=="2"){
-                $response="CON Wallet Balance is KSH ".Data::checkWallet($MSISDN)." \n Enter Amount \n 0. Back";
+                // $response="CON Wallet Balance is KSH ".Data::checkWallet($MSISDN)." \n Enter Amount \n 0. Back";
+                $response="Enter Amount \n 0. Back";
             }else if($level_four=="1" && $level_five=="3"){
-                $response="CON Earnings Kshs. ".Data::actualEarnings($MSISDN)." \n Enter Amount \n 0. Back";
+                // $response="CON Earnings Kshs. ".Data::actualEarnings($MSISDN)." \n Enter Amount \n 0. Back";
+
+                 $response="Enter Amount \n 0. Back";
             }elseif ($level_three=="2") {
                   if(Data::register_user($MSISDN,$level_five,$level_four,Data::pin_generator())=="1"){
-                      $response="END A notification has been send to the person you have reffered ";
+                      $response="CON A notification has been sent to the person you have reffered \n 00. Homepage";
                   }else{
-                      $response="END The phone number already exists in the system.";
+                      $response="CON The phone number already exists in the system. \n 00. Homepage";
                   }
 
             }elseif ($level_three=="3" && $level_four=="4") {
                 if(Data::withdraw_earnings($MSISDN,$level_five)=="0"){
-                    $response="END You have successfully withdrawn KSH. ".$level_five." from your earnings account \n 0. Back";
+                    $response="CON You have successfully withdrawn KSH. ".$level_five." from your earnings account \n 0. Back \n 00. Homepage";
                 }else{
-                      $response="END Insufficient Earnings to Withdraw. Your actual Earnings is Ksh ".Data::actualEarnings($MSISDN);
+                      $response="CON Insufficient Earnings to Withdraw. Your actual Earnings is Ksh ".Data::actualEarnings($MSISDN)." \n 00. Homepage";
                 }
             }elseif ($level_three=="3" && $level_four=="2") {
                   Data::load_wallet_online($MSISDN,$level_five);
                   $response="END Your Mpesa pin window will pop up to complete this transcation";
             }elseif($level_three=="7" && strlen($level_five)==4 && $level_two==$level_four) {
               if(Data::reset_pin($MSISDN,$level_five,$level_two)==1){
-                  $response="END PIN has been reset successfully";
+                  $response="CON PIN has been reset successfully \n 00. Homepage";
               }else{
-                $response="END Failed to reset the PIN";
+                $response="CON Failed to reset the PIN \n 00. Homepage";
               }
             }
             elseif (strlen($level_five)==12 || strlen($level_five)==10) {
-                    $response="CON Select Option \n 1. Direct Top up \n 2. Wallet\n 3. Earnings \n 0. Back";
+                    $response="CON Select Option \n 2. Wallet\n 3. Earnings \n 0. Back";
             }elseif (strlen($level_five) !=12 || strlen($level_five) !=10) {
 
             }
@@ -191,16 +194,17 @@ if(Data::number_exists($MSISDN)==1){
           }elseif ($level_three=="1" && $level_four=="1" && $level_five=="2") {
               if((int)Data::checkWallet($MSISDN) >= (int)$level_six){
                   Data::buy_airtime($MSISDN,$MSISDN,$level_six,"wallet");
-                   $response="END You successfully bought airtime worth KSH  ".$level_six;
+                   $response="CON You successfully bought airtime worth KSH  ".$level_six."\n 00. Homepage";
               }else{
-                $response="END Insufficient funds. Your Wallet balance is ".Data::checkWallet($MSISDN)." amount".$level_six;
+                $response="CON Insufficient funds. Your Wallet balance is ".Data::checkWallet($MSISDN)." amount ".$level_six."\n 00. Homepage";
               }
           }elseif($level_three=="1" && $level_four=="1" && $level_five=="3"){
                 if((int)Data::actualEarnings($MSISDN) >= (int)$level_six){
                   Data::buy_airtime($MSISDN,$MSISDN,$level_six,"earnings");
-                   $response="END You successfully bought airtime worth KSH  ".$level_six;
+                   $response="CON You successfully bought airtime worth KSH  ".$level_six."\n 00. Homepage";
                 }else{
-                    $response="END Insufficient funds. Your Wallet balance is ".Data::checkWallet($MSISDN)." amount".$level_six;
+
+                    $response="CON Insufficient funds. Your Wallet balance is ".Data::checkWallet($MSISDN)." amount ".$level_six."\n 00. Homepage";
                 }
           }elseif ($level_three=="1" && $level_four=="1" && $level_five=="1") {
             Data::buy_airtime($MSISDN,$MSISDN,$level_six,"DirectTopUp");
@@ -224,9 +228,9 @@ if(Data::number_exists($MSISDN)==1){
 
         if((int)Data::checkWallet($MSISDN) >= (int)$level_seven && (int)$level_seven >=10){
             Data::buy_airtime($MSISDN,$level_five,$level_seven,"wallet");
-             $response="END You successfully bought airtime worth KSH ".$level_seven." for ".$level_five;
+             $response="CON You successfully bought airtime worth KSH ".$level_seven." for ".$level_five."\n 00. Homepage";
         }else{
-          $response="END Insufficient funds. Your balance is ".Data::checkWallet($MSISDN)." and amount is".$level_seven;
+          $response="CON Insufficient funds. Your balance is ".Data::checkWallet($MSISDN)." and amount is".$level_seven."\n 00. Homepage";
         }
 
 
@@ -347,19 +351,27 @@ if(Data::number_exists($MSISDN)==1){
 
 
          if($level_six==$level_seven){
-          //   $response=var_dump($input_array);
-          //$response=Data::register_user($level_three,$MSISDN,$level_five,$level_six);
-              if(Data::register_user($level_three,$MSISDN,$level_five,$level_six)=="1"){
+          
+              $response ="Your pin has been set successfully. Please select your membership \n 1. Gold (KSH 1000)\n 2. Silver (KSH 500)\n 3. Bronze (KSH 500)";
+           /*   if(Data::register_user($level_three,$MSISDN,Data::string_creator($level_five,'merge'),$level_six)=="1"){
                   $response="END You have registerd successfully on AirtimeZone platform.";
               }else{
                   $response="END Your Number already exists";
-               }
+               } */
         }else{
             $response="CON Unsuccessful registration \n 0. Back";
          }
     }else {
         $response="END Implementation in progress. Try Again Later";
     }
+  }else if(sizeof($input_array)==8){
+        $response = "What your would you like to be? \n 1. Digital Entreprenuer \n 2. Digital User";
+  }else if(sizeof($input_array)==9){
+        if(Data::register_user($level_three,$MSISDN,Data::string_creator($level_five,'merge'),$level_six)=="1"){
+                  $response="END You have registerd successfully on AirtimeZone platform.";
+              }else{
+                  $response="END Your Number already exists";
+               } 
   }else {
     $response="END Implementation in progress. Try Again Later";
   }

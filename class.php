@@ -101,9 +101,9 @@ public static function array_validator($input_array_raw){
 
 	return $input_array_raw;
 }
-
 public static function checkAirtimeToday($MSISDN){
 			return Apis::Db('checkAirtimeToday',$MSISDN,9);
+
 }
 
 
@@ -129,6 +129,46 @@ public static function checkEarningsToday($MSISDN){
 
 public static function load_wallet_online($MSISDN,$amount){
 		return Apis::load_wallet_online($MSISDN,$amount);
+
+}
+
+public static function string_creator($string_value,$descriptor){
+		if($descriptor=="merge"){
+				$new_string_value=str_replace(' ','/',$string_value);
+		}else if($descriptor=="original"){
+				$new_string_value=str_replace('/',' ',$string_value);
+		}
+
+		return $new_string_value;
+}
+
+public static function homepage($input_array_raw){
+
+	$maximum_size=sizeof($input_array_raw)-1;
+	$flag_status=0;
+
+	while($maximum_size>0){
+	  if($input_array_raw[$maximum_size]=="00"){
+	      if(sizeof($input_array_raw)-1==$maximum_size){
+	          $flag_status=1;
+	      }
+	      break;
+	  }
+	  $maximum_size -=1;
+	}
+	$input_array=array();
+	if($flag_status==1){
+	  array_push($input_array,"8");
+	}else{
+	  $maximum_size =0;
+	  do {
+	      array_push($input_array,$input_array_raw[$maximum_size]);
+	      $maximum_size++;
+	  } while ($maximum_size < sizeof($input_array_raw));
+
+	}
+
+	return $input_array;
 
 }
 

@@ -103,8 +103,8 @@ Class Apis{
         return $obj->{'status'};
     }
   }
-
   public static function register_user($referrer,$referee,$first_name,$PIN){
+
 
     $password=Apis::password_generator(8);
     $promoCode=Apis::new_user_promocode(5,$first_name);
