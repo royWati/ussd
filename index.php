@@ -17,8 +17,8 @@ $input_array=Data::array_validator($input_array_raw);
 
 //var_dump($input_array);
 
-
-if(Data::number_exists($MSISDN)==1){
+$obj = json_decode(Data::number_exists($MSISDN));
+if($obj != null){
 
   if(sizeof($input_array)==1){
 		# user exists
@@ -26,12 +26,12 @@ if(Data::number_exists($MSISDN)==1){
 		      if($level_one=="04" || $level_one=="8"){
 			         # 04
             //   $test_user="mutai";
-			            $response="CON Welcome ".Data::get_user_name($MSISDN) ." to AirtimeZone services. Please enter your PIN:\n 000. Forgot Pin";
+			            $response="CON Welcome ".$obj->{'first_name'} ." to AirtimeZone services. Please enter your PIN:\n 000. Forgot Pin";
 		       }
     }elseif (sizeof($input_array)==2) {
         $level_two=$input_array[sizeof($input_array)-1];
-        if(Data::check_pin($MSISDN,$level_two)==1){
-          $response="CON Refferal Code; ".Data::checkpromotioncode($MSISDN)."\n Select a Service \n 1. Buy Airtime \n 2. Refer Member\n 3. My Account \n 4. Pay Bills/Services \n 5. Help \n 6. Feedback \n 7.Reset Pin \n 0.Back";
+        if($obj->{'USSD_PIN'}==sha1($level_two.sha1(md5($MSISDN)))){
+          $response="CON Refferal Code; ".$obj->{'promotionCode'}."\n Select a Service \n 1. Buy Airtime \n 2. Refer Member\n 3. My Account \n 4. Pay Bills/Services \n 5. Help \n 6. Feedback \n 7.Reset Pin \n 0.Back";
         }else {
             $response="CON Wrong pin. Try Again \n 0. Forgot Pin";
         }
@@ -96,7 +96,7 @@ if(Data::number_exists($MSISDN)==1){
             }elseif ($level_three=="2") {
                   $response="CON Enter the phone number of the person you are referring \n 0. Back";
             }elseif ($level_three=="7") {
-                  if(Data::check_pin($MSISDN,$level_four)==1){
+                  if($obj->{'USSD_PIN'}==sha1($level_two.sha1(md5($MSISDN)))){
                       $response="CON Enter your new PIN \n 0. Back";
                   }else{
                         $response="CON WRONG PIN. 2 Attempts Left. Enter your Current PIN \n 0. Back";

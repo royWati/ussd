@@ -1,7 +1,7 @@
 <?php
 
 include('Apis.php');
-
+include('internalDB.php');
 global $db;
 
 Class Data{
@@ -9,7 +9,21 @@ Class Data{
 	public static function number_exists($phone_number){
 		global $db;
 
-		return Apis::Db('checkUser',$phone_number,1);
+		$obj=Query::checkUser($phone_number);
+		if($obj != null){
+			return $obj;
+		}else{
+			$obj=Apis::Db('checkUser',$phone_number,1);
+			$dec_obj = json_decode($obj);
+
+			if((int)$dec_obj->{'status'}==1){
+				
+				return Query::addUser($obj);;
+			}else{
+				return null;
+			}
+		}
+		
 
 	}
 
